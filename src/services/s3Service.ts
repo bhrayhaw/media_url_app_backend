@@ -13,6 +13,7 @@ class S3Service implements IUploadService {
       Key: `${uuidv4()}-${file.originalname}`,
       Body: file.buffer,
       ContentType: file.mimetype,
+      ACL: "public-read",
     };
 
     const data = await s3.upload(params).promise();
