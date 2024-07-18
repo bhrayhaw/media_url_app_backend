@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/urls', async (req, res) => {
   try {
     const urls = await Url.find();
-    res.json(urls);
+    res.json({urls: urls.map(urlObj => urlObj.url)});
   } catch (error) {
     res.json({ message: error });
   }
