@@ -13,4 +13,4 @@ router.get('/urls', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
