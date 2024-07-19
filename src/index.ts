@@ -21,5 +21,7 @@ app.use(cors(corsOptions));
 app.use("/api", uploadRoutes);
 app.use("/api", urlRoutes);
 
+console.log("Routes registered: /api"); // Debugging line
+
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
