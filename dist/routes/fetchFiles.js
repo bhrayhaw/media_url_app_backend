@@ -12,23 +12,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadFile = void 0;
-const s3Service_1 = __importDefault(require("../services/s3Service"));
+const express_1 = __importDefault(require("express"));
 const urlModel_1 = __importDefault(require("../models/urlModel"));
-const s3Service = new s3Service_1.default();
-const uploadFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const router = express_1.default.Router();
+console.log("fetchFiles router initialized"); // Debugging line
+// Fetch URLs from DB
+router.get("/urls", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Received request to /api/urls"); // Debugging line
     try {
-        const url = yield s3Service.uploadFile(req);
-        const savedUrl = yield urlModel_1.default.create({ url });
-        res.json({ savedUrl });
+        const urls = yield urlModel_1.default.find();
+        console.log("Fetched URLs from DB:", urls); // Debugging line
+        res.json({ urls: urls.map((urlObj) => urlObj.url) });
     }
-    catch (err) {
-        if (err instanceof Error) {
-            res.status(500).send(err.message);
+    catch (error) {
+        console.error("Error fetching URLs:", error); // Debugging line
+        if (error instanceof Error) {
+            res.status(500).json({ message: error.message });
         }
         else {
-            res.status(500).send("An unknown error occurred.");
+            res.status(500).json({ message: "An unknown error occurred." });
         }
     }
-});
-exports.uploadFile = uploadFile;
+}));
+exports.default = router;

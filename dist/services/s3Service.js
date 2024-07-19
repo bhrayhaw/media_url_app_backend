@@ -25,6 +25,7 @@ class S3Service {
                 Key: `${(0, uuid_1.v4)()}-${file.originalname}`,
                 Body: file.buffer,
                 ContentType: file.mimetype,
+                ACL: "public-read",
             };
             const data = yield s3Config_1.default.upload(params).promise();
             return data.Location;
